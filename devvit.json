@@ -17,6 +17,11 @@
     "dir": "dist/server",
     "entry": "index.cjs"
   },
+  "permissions": {
+    "reddit": {
+      "asUser": ["SUBMIT_COMMENT"]
+    }
+  },
   "menu": {
     "items": [
       {
@@ -27,16 +32,21 @@
         "endpoint": "/internal/menu/post-create"
       },
       {
-        "label": "Example form",
-        "description": "Show a simple form",
+        "label": "Create daily challenge",
+        "description": "Post today's daily flap challenge",
         "location": "subreddit",
         "forUserType": "moderator",
-        "endpoint": "/internal/menu/example-form"
+        "endpoint": "/internal/menu/daily-challenge"
       }
     ]
   },
-  "forms": {
-    "exampleForm": "/internal/form/example-submit"
+  "scheduler": {
+    "tasks": {
+      "daily-challenge": {
+        "endpoint": "/internal/cron/daily-challenge",
+        "cron": "0 0 * * *"
+      }
+    }
   },
   "triggers": {
     "onAppInstall": "/internal/triggers/on-app-install"

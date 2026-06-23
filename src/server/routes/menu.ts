@@ -25,3 +25,25 @@ menu.post('/post-create', async (c) => {
     );
   }
 });
+
+menu.post('/daily-challenge', async (c) => {
+  try {
+    const post = await createPost({ daily: true });
+
+    return c.json<UiResponse>(
+      {
+        navigateTo: `https://reddit.com/r/${context.subredditName}/comments/${post.id}`,
+        showToast: 'Daily challenge posted!',
+      },
+      200
+    );
+  } catch (error) {
+    console.error(`Error creating daily challenge: ${error}`);
+    return c.json<UiResponse>(
+      {
+        showToast: 'Failed to create daily challenge',
+      },
+      400
+    );
+  }
+});
