@@ -2,7 +2,7 @@ import type { GemLeaderboardEntry, PlayerStats, SubmitScoreResponse } from '../.
 import { GEM_REWARDS } from '../../shared/xp';
 
 type LootModalProps = {
-  stats: PlayerStats;
+  stats: PlayerStats | null;
   gemLeaderboard: GemLeaderboardEntry[];
   lastResult: SubmitScoreResponse | null;
   onClose: () => void;
@@ -107,7 +107,7 @@ export const LootModal = ({
               Your Gems
             </span>
             <span className="text-[#ffd700] text-2xl font-bold">
-              💎 {stats.gems.toLocaleString()}
+              {stats ? `💎 ${stats.gems.toLocaleString()}` : '—'}
             </span>
           </div>
 
@@ -178,6 +178,7 @@ export const LootModal = ({
           )}
 
           {/* XP level bar */}
+          {stats && (
           <div>
             <p className="text-[#5ba3d0] text-xs uppercase tracking-widest mb-1">
               Level {stats.xp.level}
@@ -192,6 +193,7 @@ export const LootModal = ({
               {stats.xp.progress.current} / {stats.xp.progress.required} XP
             </p>
           </div>
+          )}
         </div>
       </div>
     </div>

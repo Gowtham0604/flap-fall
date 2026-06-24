@@ -7,7 +7,7 @@ type GameOverlayProps = {
   /** Show restart only during dead phase; always show the icon buttons */
   showRestart: boolean;
   onRestart: () => void;
-  stats: PlayerStats;
+  stats: PlayerStats | null;
   gemLeaderboard: GemLeaderboardEntry[];
   lastResult: SubmitScoreResponse | null;
   audioManager: AudioManager | null;

@@ -1,1 +1,28 @@
 @import 'tailwindcss';
+
+/* ── Splash screen premium animations ─────────────────────────────────────── */
+
+@keyframes title-shimmer {
+  0%   { background-position: 0% center; }
+  100% { background-position: 200% center; }
+}
+
+@keyframes canvas-glow {
+  0%, 100% { box-shadow: 0 0 20px rgba(255,215,0,0.2), 0 10px 0 #070e1c; }
+  50%       { box-shadow: 0 0 48px rgba(255,215,0,0.55), 0 10px 0 #070e1c; }
+}
+
+@keyframes btn-pulse-ring {
+  0%   { transform: scale(1);    opacity: 0.75; }
+  100% { transform: scale(1.12); opacity: 0; }
+}
+
+@keyframes star-twinkle {
+  0%, 100% { opacity: 0.8; }
+  50%       { opacity: 0.1; }
+}
+
+@keyframes badge-live {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.5; }
+}

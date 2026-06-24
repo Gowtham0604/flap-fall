@@ -488,7 +488,10 @@ export const FlapGame = ({ onGameOver, onStart, audioManager }: FlapGameProps) =
   }, [onGameOver, audioManager]);
 
   return (
-    <div className="relative w-full h-full flex items-start justify-center">
+    <div
+      className="absolute inset-0 flex items-center justify-center overflow-hidden"
+      style={{ containerType: 'size' }}
+    >
       <canvas
         ref={canvasRef}
         width={GAME_CONFIG.canvasWidth}
@@ -496,9 +499,8 @@ export const FlapGame = ({ onGameOver, onStart, audioManager }: FlapGameProps) =
         className="block cursor-pointer touch-none"
         style={{
           imageRendering: 'pixelated',
-          width: 'auto',
-          height: 'min(calc(100dvh - 210px), 560px)',
-          maxWidth: '100%',
+          width: `min(100cqw, calc(100cqh * ${GAME_CONFIG.canvasWidth / GAME_CONFIG.canvasHeight}))`,
+          height: 'auto',
           aspectRatio: `${GAME_CONFIG.canvasWidth} / ${GAME_CONFIG.canvasHeight}`,
         }}
         onClick={handleFlap}
