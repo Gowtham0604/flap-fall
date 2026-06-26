@@ -13,6 +13,10 @@ const test = createDevvitTest();
 test('POST /internal/menu/post-create returns navigateTo on success', async () => {
   const { name: subredditName } = await reddit.getCurrentSubreddit();
   vi.spyOn(reddit, 'submitCustomPost').mockResolvedValue({ id: 't3_abc' } as never);
+  vi.spyOn(reddit, 'submitComment').mockResolvedValue({
+    id: 't1_score_thread',
+    distinguish: vi.fn().mockResolvedValue(undefined),
+  } as never);
 
   const res = await app.request('/internal/menu/post-create', { method: 'POST' });
   const json = await res.json();
@@ -28,6 +32,11 @@ test('createPost submits with subreddit and title', async () => {
   const submit = vi
     .spyOn(reddit, 'submitCustomPost')
     .mockResolvedValue({ id: 't3_test' } as never);
+  const distinguish = vi.fn().mockResolvedValue(undefined);
+  vi.spyOn(reddit, 'submitComment').mockResolvedValue({
+    id: 't1_score_thread',
+    distinguish,
+  } as never);
 
   await createPost();
 
@@ -38,6 +47,7 @@ test('createPost submits with subreddit and title', async () => {
       entry: 'default',
     })
   );
+  expect(distinguish).toHaveBeenCalledWith(true);
 });
 
 test('updateStreak starts at 1 for new players', async () => {

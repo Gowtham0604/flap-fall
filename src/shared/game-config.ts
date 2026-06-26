@@ -1,16 +1,16 @@
 export const GAME_CONFIG = {
-  gravity: 0.45,
-  flapVelocity: -7.5,
+  gravity: 0.38,
+  flapVelocity: -7.0,
   pipeWidth: 52,
-  pipeGap: 140,
-  pipeSpeed: 2.8,
-  pipeSpawnIntervalMs: 1600,
+  pipeGap: 165,
+  pipeSpeed: 2.3,
+  pipeSpawnIntervalMs: 2000,
   birdSize: 28,
   canvasWidth: 360,
   canvasHeight: 560,
   groundHeight: 48,
   maxScore: 9999,
-  maxPlausibleScorePerSecond: 3,
+  maxPlausibleScorePerSecond: 2,
   maxGameDurationMs: 600_000,
 } as const;
 

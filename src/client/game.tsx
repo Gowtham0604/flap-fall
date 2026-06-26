@@ -10,7 +10,7 @@ import { createAudioManager } from './lib/audio';
 import type { SubmitScoreResponse } from '../shared/api';
 
 export const App = () => {
-  const { init, lastResult, error, submitScore } = useGameSession();
+  const { init, lastResult, error, submitScore, shareScore } = useGameSession();
   const [gameKey, setGameKey] = useState(0);
   const [isDead, setIsDead] = useState(false);
   const [deadScore, setDeadScore] = useState(0);
@@ -36,14 +36,20 @@ export const App = () => {
     [submitScore]
   );
 
+  const result = localResult ?? lastResult;
+
+  const handleShareScore = useCallback(async () => {
+    const shareText = result?.shareText;
+    if (!shareText) return false;
+    return shareScore(shareText);
+  }, [result?.shareText, shareScore]);
+
   const handlePlayAgain = useCallback(() => {
     setLocalResult(null);
     setIsDead(false);
     setDeadScore(0);
     setGameKey((k) => k + 1);
   }, []);
-
-  const result = localResult ?? lastResult;
 
   return (
     <div
@@ -73,6 +79,7 @@ export const App = () => {
           score={deadScore}
           result={result}
           onPlayAgain={handlePlayAgain}
+          onShareScore={handleShareScore}
         />
       )}
 

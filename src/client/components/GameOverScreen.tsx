@@ -1,3 +1,5 @@
+import { showToast } from '@devvit/web/client';
+import { useCallback, useState } from 'react';
 import type { SubmitScoreResponse } from '../../shared/api';
 
 type GameOverScreenProps = {
@@ -6,14 +8,34 @@ type GameOverScreenProps = {
   /** Full submission result; null while the network request is in flight. */
   result: SubmitScoreResponse | null;
   onPlayAgain: () => void;
+  onShareScore: () => Promise<boolean>;
 };
 
 export const GameOverScreen = ({
   score,
   result,
   onPlayAgain,
+  onShareScore,
 }: GameOverScreenProps) => {
+  const [sharing, setSharing] = useState(false);
+  const [shared, setShared] = useState(false);
   const isPB = result?.isPersonalBest ?? false;
+
+  const handleShareScore = useCallback(async () => {
+    if (!result || sharing || shared) return;
+    setSharing(true);
+    try {
+      const success = await onShareScore();
+      if (success) {
+        setShared(true);
+        void showToast('Score posted to comments!');
+      } else {
+        void showToast('Could not post score. Try again.');
+      }
+    } finally {
+      setSharing(false);
+    }
+  }, [onShareScore, result, sharing, shared]);
 
   return (
     /* Full-canvas overlay */
@@ -82,7 +104,7 @@ export const GameOverScreen = ({
       </div>
 
       {/* ── Action buttons ────────────────────────────────────────────── */}
-      <div className="flex w-full max-w-[260px]">
+      <div className="flex w-full max-w-[260px] gap-2">
         <button
           type="button"
           onClick={onPlayAgain}
@@ -95,6 +117,20 @@ export const GameOverScreen = ({
           }}
         >
           ↺ Play Again
+        </button>
+        <button
+          type="button"
+          onClick={() => void handleShareScore()}
+          disabled={!result || sharing || shared}
+          className="flex-1 py-3 rounded-lg font-bold text-sm uppercase tracking-wider select-none transition-opacity active:opacity-75 disabled:opacity-50"
+          style={{
+            background: shared ? '#1a4a2a' : '#0f3460',
+            border: `3px solid ${shared ? '#4ade80' : '#3a80b8'}`,
+            color: shared ? '#4ade80' : '#5ba3d0',
+            boxShadow: '0 4px 0 #0a1a30',
+          }}
+        >
+          {shared ? '✓ Shared' : sharing ? '…' : '💬 Comment Score'}
         </button>
       </div>
     </div>
